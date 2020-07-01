@@ -7,18 +7,30 @@ def draw_sea(wave = 7):
     brushColor(66, 30, 224)
     rectangle(0, 125, 400, 185)
 
-    # for i in range(1, wave + 1):
-    #     circle(28 * i, 185, 14)
-
-def draw_sand(wave = 7):
+def draw_sand(wave = 14):
     brushColor(239, 246, 4)
+    penColor(239, 246, 4)
     rectangle(0, 185, 400, 270)
-    circle(28, 195, 14)
+
+    x1, y1, y2 = 15, 210, 160
+    radius = 30
+
+    for i in range(wave):
+        if i % 2 == 0:
+            penColor(239, 246, 4)
+            brushColor(239, 246, 4)
+            circle(x1 + i * 33, y1, radius)
+        else:
+            penColor(66, 30, 224)
+            brushColor(66, 30, 224)
+            circle(x1 + i * 33, y2, radius)
 
 def draw_sun(radius = 25):
     penColor(254, 247, 25)
     brushColor(255, 247, 23)
     circle(350, 45, radius)
+
+
 
 def draw_clouds(size = 1, radius = 10):
     penColor(241, 241, 241)
@@ -37,28 +49,33 @@ def draw_clouds(size = 1, radius = 10):
     circle(x + 3 * step, 35, radius)
     circle(x + 5 + 3 * step, 45, radius)
 
-def draw_umbrella(x, y, size = 1):
+def draw_umbrella(size = 1, x = 75, y = 175):
+    height = 80
+    size_of_pen = 5 / size
+    half_size_of_pen = size_of_pen / 2
+
     # bottom
-    penSize(5 / size)
+    penSize(size_of_pen)
     penColor(228, 131, 18)
-    line(x, y, x, 255)
+    line(x, y, x, height / size + y)
     penColor(244, 80, 80)
-    line(75, 175, 75, 150)
+    line(x, y, x, y - 25 / size)
+
     # top
     penSize(1)
     penColor(195, 62, 62)
     brushColor(244, 80, 80)
-    polygon([(35, 175), (72.5, 150),
-             (72.5, 175), (35, 175)])
-    polygon([(77.5, 175), (77.5, 150),
-             (117.5, 175), (77.5, 175)])
+    polygon([(x - half_size_of_pen - 35 / size, y), (x - half_size_of_pen, y - 25 / size),
+             (x - half_size_of_pen, y), (x - half_size_of_pen - 35 / size, y)])
+    polygon([(x + half_size_of_pen + 35 / size, y), (x + half_size_of_pen, y - 25 / size),
+             (x + half_size_of_pen, y), (x + half_size_of_pen + 35 / size, y)])
+
+    # black lines on umbrella
     penColor(197, 63, 63)
-    line(45, 175, 72.5, 150)
-    line(55, 175, 72.5, 150)
-    line(65, 175, 72.5, 150)
-    line(107, 175, 77.5, 150)
-    line(97, 175, 77.5, 150)
-    line(87, 175, 77.5, 150)
+    for i in range(1, 4):
+        line(x - half_size_of_pen - 35 / size + 7.5 / size * i, y, x - half_size_of_pen, y - 25 / size)
+        line(x + half_size_of_pen + 35 / size - 7.5 / size * i, y, x + half_size_of_pen, y - 25 / size)
+
 
 def draw_boats(size = 1):
     penColor(165, 70, 41)
@@ -98,11 +115,12 @@ def main():
     draw_clouds(2, 10)
     draw_clouds(3, 10)
 
-    draw_umbrella(75, 175, 1)
-    draw_umbrella(175, 190, 2)
+    draw_umbrella(size = 1, x = 75, y = 175)
+    draw_umbrella(size = 1.5, x = 175, y = 200)
 
     draw_boats(1)
     draw_boats(2)
+
 
 main()
 run()
