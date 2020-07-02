@@ -51,22 +51,24 @@ def draw_sun(length = 30):
 
 
 
-def draw_clouds(size = 1, radius = 10):
+def draw_clouds(size_x = 1, size_y = 1, x = 30, y = 25, step = 20):
     penColor(241, 241, 241)
     brushColor(255, 255, 255)
 
-    x = 85
-    step = 15
+    x1 = x + step * size_x
+    y1 = y + step * size_y
+    x_koef_closely = 0.7 # how near will be circles of clouds to each other - horizontal
+    y_koef_closely = 2.5 # how near will be circles of clouds to each other - vertical
 
-    circle(x + step, 35, radius)
-    circle(x + 2 * step, 35, radius)
+    oval(x, y, x1, y1)
+    oval(x + step * x_koef_closely, y, x1 + step * x_koef_closely, y1)
 
-    circle(x + 5, 45, radius)
-    circle(x + 5 + step, 45, radius)
-    circle(x + 5 + 2 * step, 45, radius)
+    oval(x - step / 2, y + step / y_koef_closely, x1 - step / 2, y1 + step / y_koef_closely)
+    oval(x - step / 2 + step * x_koef_closely, y + step / y_koef_closely, x1 - step / 2 + step * x_koef_closely, y1 + step / y_koef_closely)
+    oval(x - step / 2 + step * x_koef_closely * 2, y + step / y_koef_closely, x1 - step / 2 + step * x_koef_closely * 2, y1 + step / y_koef_closely)
 
-    circle(x + 3 * step, 35, radius)
-    circle(x + 5 + 3 * step, 45, radius)
+    oval(x + step * x_koef_closely * 2, y, x1 + step * x_koef_closely * 2, y1)
+    oval(x - step / 2 + step * x_koef_closely * 3, y + step / y_koef_closely, x1 - step / 2 + step * x_koef_closely * 3, y1 + step / y_koef_closely)
 
 def draw_umbrella(size = 1, x = 75, y = 175):
     height = 80
@@ -130,9 +132,9 @@ def main():
     draw_sand()
     draw_sun()
 
-    draw_clouds(1, 10)
-    draw_clouds(2, 10)
-    draw_clouds(3, 10)
+    draw_clouds(1, 1, 30, 25, 20)
+    draw_clouds(1, 1.1, 150, 10, 40)
+    draw_clouds(1.4, 0.9, 50, 65, 30)
 
     draw_umbrella(size = 1, x = 75, y = 175)
     draw_umbrella(size = 1.5, x = 175, y = 200)
