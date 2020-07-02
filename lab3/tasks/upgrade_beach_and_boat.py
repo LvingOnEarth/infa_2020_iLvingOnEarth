@@ -49,8 +49,6 @@ def draw_sun(length = 30):
         polygon([(350 - sx, 45 - bottom_length + sy), ((350 + length) - rx, 45 - ry),
                  (350 + sx, 45 + bottom_length - sy), (350 - sx, 45 - bottom_length + sy)])
 
-
-
 def draw_clouds(size_x = 1, size_y = 1, x = 30, y = 25, step = 20):
     penColor(241, 241, 241)
     brushColor(255, 255, 255)
@@ -98,29 +96,40 @@ def draw_umbrella(size = 1, x = 75, y = 175):
         line(x + half_size_of_pen + 35 / size - 7.5 / size * i, y, x + half_size_of_pen, y - 25 / size)
 
 
-def draw_boats(size = 1):
+def draw_boats(size = 1, x = 235, y = 135):
     penColor(165, 70, 41)
     brushColor(187, 79, 1)
-    rectangle(235, 135, 330, 160)
-    polygon([(330, 160), (375, 135),
-             (330, 135), (330, 160)])
-    arc(260, 110, 210, 160, 180, 270)
 
-    penSize(3)
+    x_length = 95 * size
+    y_length = 25 * size
+
+    x1 = x + x_length
+    y1 = y + y_length
+
+    rectangle(x, y, x1, y1)
+    polygon([(x1, y1), (x1 + 45 * size, y),
+             (x1, y), (x1, y1)])
+    arc(x - y_length, y - y_length, x + y_length, y1, 180, 270)
+
+    penSize(3 * size)
     brushColor(255, 255, 255)
     penColor(0, 0, 0)
-    circle(340, 143.5, 6)
+    circle(x1 + 10 * size, y1 - 16.5 * size, 6 * size)
 
-    penSize(5)
-    line(270, 135, 270, 75)
+    penSize(5 * size)
+    line(x + (x1 - x) / 2 - 15 * size, y, x + (x1 - x) / 2 - 15 * size, y - 60 * size)
 
     penSize(1)
     penColor(170, 173, 132)
     brushColor(223, 214, 154)
-    polygon([(272.5, 135), (285, 105),
-             (310, 105), (272.5, 135)])
-    polygon([(272.5, 75), (285, 105),
-             (310, 105), (272.5, 75)])
+    polygon([(x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y),
+             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 12.5 * size, y - (y - (y - 60 * size)) / 2),
+             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 37.5 * size, y - (y - (y - 60 * size)) / 2),
+             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y)])
+    polygon([(x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size),
+             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 12.5 * size, y - (y - (y - 60 * size)) / 2),
+             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 37.5 * size, y - (y - (y - 60 * size)) / 2),
+             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size)])
 
 def main():
     # sky
@@ -139,8 +148,8 @@ def main():
     draw_umbrella(size = 1, x = 75, y = 175)
     draw_umbrella(size = 1.5, x = 175, y = 200)
 
-    draw_boats(1)
-    draw_boats(2)
+    draw_boats(size = 1, x = 235, y = 135)
+    draw_boats(size = 0.5, x = 130, y = 150)
 
 
 main()
