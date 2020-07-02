@@ -1,4 +1,5 @@
 from graph import *
+import math
 
 windowSize(400, 270)
 
@@ -25,10 +26,28 @@ def draw_sand(wave = 14):
             brushColor(66, 30, 224)
             circle(x1 + i * 33, y2, radius)
 
-def draw_sun(radius = 25):
+def draw_sun(length = 30):
     penColor(254, 247, 25)
     brushColor(255, 247, 23)
-    circle(350, 45, radius)
+    # circle(350, 45, 25)
+
+    bottom_length = length / 5
+
+    polygon([(350, 45 - bottom_length), (350 + length, 45),
+             (350, 45 + bottom_length), (350, 45 - bottom_length)])
+
+    for i in range(36):
+        alpha = (10 + 10 * i) / 2
+        r = 2 * length * math.sin(alpha * (math.pi / 180))
+        rx = r * math.cos((90 - alpha) * (math.pi / 180))
+        ry = r * math.cos(alpha * (math.pi / 180))
+
+        s = 2 * bottom_length * math.sin(alpha * (math.pi / 180))
+        sx = s * math.cos(alpha * (math.pi / 180))
+        sy = s * math.cos((90 - alpha) * (math.pi / 180))
+
+        polygon([(350 - sx, 45 - bottom_length + sy), ((350 + length) - rx, 45 - ry),
+                 (350 + sx, 45 + bottom_length - sy), (350 - sx, 45 - bottom_length + sy)])
 
 
 
