@@ -1,7 +1,15 @@
 from graph import *
 import math
 
-windowSize(400, 270)
+x_window_size = 400
+y_window_size = 270
+
+windowSize(x_window_size, y_window_size)
+
+def draw_sky():
+    penColor(82, 63, 229)
+    brushColor(162, 245, 255)
+    rectangle(0, 0, 400, 125)
 
 def draw_sea(wave = 7):
     penColor(183, 177, 79)
@@ -132,13 +140,10 @@ def draw_boats(size = 1, x = 235, y = 135):
              (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size)])
 
 def main():
-    # sky
-    penColor(82, 63, 229)
-    brushColor(162, 245, 255)
-    rectangle(0, 0, 400, 125)
-
+    draw_sky()
     draw_sea()
     draw_sand()
+
     draw_sun()
 
     draw_clouds(1, 1, 30, 25, 20)
