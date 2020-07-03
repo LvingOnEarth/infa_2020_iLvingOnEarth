@@ -4,6 +4,9 @@ import math
 x_window_size = 400
 y_window_size = 270
 
+# x_window_size = 600
+# y_window_size = 500
+
 windowSize(x_window_size, y_window_size)
 
 y_top_bottom = []
@@ -49,17 +52,20 @@ def draw_sand(y_top_bottom_arr, radius = 30):
     rectangle(x_top, y_top, x_bottom,  y_bottom)
 
     count_of_sand_waves = x_window_size // radius
-    x1, y1, y2 = 15, 210, 160
+    x1 = 15
+    y_top_circle = y_top - radius * 0.86
+    y_bottom_circle = y_top + radius * 0.86
+    # x1, y1, y2 = 15, 210, 160
 
     for i in range(count_of_sand_waves):
         if i % 2 == 0:
             penColor(239, 246, 4)
             brushColor(239, 246, 4)
-            circle(x1 + i * 33, y1, radius)
+            circle(x1 + i * 33, y_bottom_circle, radius)
         else:
             penColor(66, 30, 224)
             brushColor(66, 30, 224)
-            circle(x1 + i * 33, y2, radius)
+            circle(x1 + i * 33, y_top_circle, radius)
 
 def draw_sun(length = 30):
     penColor(254, 247, 25)
