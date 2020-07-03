@@ -6,25 +6,52 @@ y_window_size = 270
 
 windowSize(x_window_size, y_window_size)
 
-def draw_sky():
-    penColor(82, 63, 229)
+y_top_bottom = []
+
+def calculate_top_bottom_sky_sea_sand():
+    y_fill = (0.46, 0.23, 0.31)
+    y_top = 0
+    y_bottom = 0
+
+    for i in range(len(y_fill)):
+        if i != 0:
+            y_top = y_bottom
+
+        y_bottom += y_window_size * y_fill[i]
+
+        y_top_bottom.append([y_top, y_bottom])
+
+def draw_sky(y_top_bottom_arr):
+    penColor(162, 245, 255)
     brushColor(162, 245, 255)
-    rectangle(0, 0, 400, 125)
 
-def draw_sea(wave = 7):
-    penColor(183, 177, 79)
+    x_top, x_bottom = 0, x_window_size
+    y_top, y_bottom = y_top_bottom_arr
+
+    rectangle(x_top, y_top, x_bottom, y_bottom)
+
+def draw_sea(y_top_bottom_arr):
+    penColor(66, 30, 224)
     brushColor(66, 30, 224)
-    rectangle(0, 125, 400, 185)
 
-def draw_sand(wave = 14):
+    x_top, x_bottom = 0, x_window_size
+    y_top, y_bottom = y_top_bottom_arr
+
+    rectangle(x_top, y_top, x_bottom, y_bottom)
+
+def draw_sand(y_top_bottom_arr, radius = 30):
     brushColor(239, 246, 4)
     penColor(239, 246, 4)
-    rectangle(0, 185, 400, 270)
 
+    x_top, x_bottom = 0, x_window_size
+    y_top, y_bottom = y_top_bottom_arr
+
+    rectangle(x_top, y_top, x_bottom,  y_bottom)
+
+    count_of_sand_waves = x_window_size // radius
     x1, y1, y2 = 15, 210, 160
-    radius = 30
 
-    for i in range(wave):
+    for i in range(count_of_sand_waves):
         if i % 2 == 0:
             penColor(239, 246, 4)
             brushColor(239, 246, 4)
@@ -37,7 +64,6 @@ def draw_sand(wave = 14):
 def draw_sun(length = 30):
     penColor(254, 247, 25)
     brushColor(255, 247, 23)
-    # circle(350, 45, 25)
 
     bottom_length = length / 5
 
@@ -140,9 +166,11 @@ def draw_boats(size = 1, x = 235, y = 135):
              (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size)])
 
 def main():
-    draw_sky()
-    draw_sea()
-    draw_sand()
+    calculate_top_bottom_sky_sea_sand()
+
+    draw_sky(y_top_bottom_arr = y_top_bottom[0])
+    draw_sea(y_top_bottom_arr = y_top_bottom[1])
+    draw_sand(y_top_bottom_arr = y_top_bottom[2])
 
     draw_sun()
 
