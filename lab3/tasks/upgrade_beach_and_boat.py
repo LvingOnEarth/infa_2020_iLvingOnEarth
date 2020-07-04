@@ -8,10 +8,10 @@ y_window_size = 270
 # y_window_size = 500
 
 windowSize(x_window_size, y_window_size)
-
-y_top_bottom = []
+canvasSize(x_window_size, y_window_size)
 
 def calculate_top_bottom_sky_sea_sand():
+    y_top_bottom = []
     y_fill = (0.46, 0.23, 0.31)
     y_top = 0
     y_bottom = 0
@@ -23,6 +23,8 @@ def calculate_top_bottom_sky_sea_sand():
         y_bottom += y_window_size * y_fill[i]
 
         y_top_bottom.append([y_top, y_bottom])
+
+    return y_top_bottom
 
 def draw_sky(y_top_bottom_arr):
     penColor(162, 245, 255)
@@ -67,27 +69,42 @@ def draw_sand(y_top_bottom_arr, radius = 30):
             brushColor(66, 30, 224)
             circle(x1 + i * 33, y_top_circle, radius)
 
-def draw_sun(length = 30):
+def draw_sun(triangle_length = y_window_size * 0.11):
     penColor(254, 247, 25)
     brushColor(255, 247, 23)
 
-    bottom_length = length / 5
+    angle_of_triangle_turn = 10
 
-    polygon([(350, 45 - bottom_length), (350 + length, 45),
-             (350, 45 + bottom_length), (350, 45 - bottom_length)])
+    half_bottom_triangle_length = triangle_length / 5
+
+    x_center_of_sun = x_window_size * 0.88
+    y_center_of_sun = y_window_size * 0.17
+
+    x_triangle_point_1 = x_center_of_sun
+    y_triangle_point_1 = y_center_of_sun - half_bottom_triangle_length
+
+    x_triangle_point_2 = x_center_of_sun + triangle_length
+    y_triangle_point_2 = y_center_of_sun
+
+    x_triangle_point_3 = x_center_of_sun
+    y_triangle_point_3 = y_center_of_sun + half_bottom_triangle_length
+
+
+    polygon([(x_triangle_point_1, y_triangle_point_1), (x_triangle_point_2, y_triangle_point_2),
+             (x_triangle_point_3, y_triangle_point_3), (x_triangle_point_1, y_triangle_point_1)])
 
     for i in range(36):
-        alpha = (10 + 10 * i) / 2
-        r = 2 * length * math.sin(alpha * (math.pi / 180))
+        alpha = (angle_of_triangle_turn + angle_of_triangle_turn * i) / 2
+        r = 2 * triangle_length * math.sin(alpha * (math.pi / 180))
         rx = r * math.cos((90 - alpha) * (math.pi / 180))
         ry = r * math.cos(alpha * (math.pi / 180))
 
-        s = 2 * bottom_length * math.sin(alpha * (math.pi / 180))
+        s = 2 * half_bottom_triangle_length * math.sin(alpha * (math.pi / 180))
         sx = s * math.cos(alpha * (math.pi / 180))
         sy = s * math.cos((90 - alpha) * (math.pi / 180))
 
-        polygon([(350 - sx, 45 - bottom_length + sy), ((350 + length) - rx, 45 - ry),
-                 (350 + sx, 45 + bottom_length - sy), (350 - sx, 45 - bottom_length + sy)])
+        polygon([(x_triangle_point_1 - sx, y_triangle_point_1 + sy), (x_triangle_point_2 - rx, y_triangle_point_2 - ry),
+                 (x_triangle_point_3 + sx, y_triangle_point_3 - sy), (x_triangle_point_1 - sx, y_triangle_point_1 + sy)])
 
 def draw_clouds(size_x = 1, size_y = 1, x = 30, y = 25, step = 20):
     penColor(241, 241, 241)
@@ -172,7 +189,7 @@ def draw_boats(size = 1, x = 235, y = 135):
              (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size)])
 
 def main():
-    calculate_top_bottom_sky_sea_sand()
+    y_top_bottom = calculate_top_bottom_sky_sea_sand()
 
     draw_sky(y_top_bottom_arr = y_top_bottom[0])
     draw_sea(y_top_bottom_arr = y_top_bottom[1])
