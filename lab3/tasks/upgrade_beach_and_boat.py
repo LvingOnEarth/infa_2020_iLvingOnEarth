@@ -1,17 +1,26 @@
 from graph import *
 import math
 
+X_WINDOW_SIZE = 400
+Y_WINDOW_SIZE = 270
+
+# x_window_size = 600
+# y_window_size = 405
+
 x_window_size = 400
 y_window_size = 270
 
-# x_window_size = 600
-# y_window_size = 500
+# x_koef_screen = 1 - X_WINDOW_SIZE / x_window_size
+# y_koef_screen = 1 - Y_WINDOW_SIZE / y_window_size
+
+x_koef_screen = x_window_size / X_WINDOW_SIZE
+y_koef_screen = y_window_size / Y_WINDOW_SIZE
 
 windowSize(x_window_size, y_window_size)
 canvasSize(x_window_size, y_window_size)
 
 def calculate_top_bottom_sky_sea_sand():
-    y_top_bottom = []
+    y_top_bottom_arr = []
     y_fill = (0.46, 0.23, 0.31)
     y_top = 0
     y_bottom = 0
@@ -22,9 +31,9 @@ def calculate_top_bottom_sky_sea_sand():
 
         y_bottom += y_window_size * y_fill[i]
 
-        y_top_bottom.append([y_top, y_bottom])
+        y_top_bottom_arr.append([y_top, y_bottom])
 
-    return y_top_bottom
+    return y_top_bottom_arr
 
 def draw_sky(y_top_bottom_arr):
     penColor(162, 245, 255)
@@ -106,24 +115,71 @@ def draw_sun(triangle_length = y_window_size * 0.11):
         polygon([(x_triangle_point_1 - sx, y_triangle_point_1 + sy), (x_triangle_point_2 - rx, y_triangle_point_2 - ry),
                  (x_triangle_point_3 + sx, y_triangle_point_3 - sy), (x_triangle_point_1 - sx, y_triangle_point_1 + sy)])
 
+def calculate_point_of_cloud_circle(size_x, size_y, x, y, step):
+    '''
+    :param size_x: size of circle in x coordinate
+    :param size_y: size of circle in y coordinate
+    :param x: x coordinate for first circle
+    :param y: y coordinate for first circle
+    :param step:
+    :return: array (point_of_clouds_arr) with coordinate for all circles
+    '''
+    point_of_clouds_arr = []
+
+    x_independent = x * x_koef_screen
+    y_independent = y * y_koef_screen
+
+    size_x *= x_koef_screen
+    size_y *= y_koef_screen
+
+    x_koef_closely = 0.7  # how near will be circles of clouds to each other - horizontal
+    y_koef_closely = 2.5  # how near will be circles of clouds to each other - vertical
+
+    step_x = step * x_koef_closely * x_koef_screen
+    step_y = step // y_koef_closely * y_koef_screen
+
+    circles_in_row_1 = 3
+    circles_in_row_2 = 4
+
+    for i in range(circles_in_row_1 - 1):
+        x1 = x_independent + step_x * i
+        y1 = y_independent
+
+        x2 = x1 + step * size_x
+        y2 = y1 + step * size_y
+
+        point_of_clouds_arr.append([x1, y1, x2, y2])
+
+    for i in range(circles_in_row_2 + 1):
+        if i != 3:
+            if i < 3:
+                x1 = x_independent - step // 2 + step_x * i
+            else:
+                x1 = x_independent - step // 2 + step_x * (circles_in_row_2 - 1)
+            y1 = y_independent + step_y
+
+            x2 = x1 + step * size_x
+            y2 = y1 + step * size_y
+
+        else:
+            x1 = x_independent + step_x * (circles_in_row_1 - 1)
+            y1 = y_independent
+
+            x2 = x1 + step * size_x
+            y2 = y1 + step * size_y
+
+        point_of_clouds_arr.append([x1, y1, x2, y2])
+
+    return point_of_clouds_arr
+
 def draw_clouds(size_x = 1, size_y = 1, x = 30, y = 25, step = 20):
     penColor(241, 241, 241)
     brushColor(255, 255, 255)
 
-    x1 = x + step * size_x
-    y1 = y + step * size_y
-    x_koef_closely = 0.7 # how near will be circles of clouds to each other - horizontal
-    y_koef_closely = 2.5 # how near will be circles of clouds to each other - vertical
+    point_of_clouds_arr = calculate_point_of_cloud_circle(size_x, size_y, x, y, step)
 
-    oval(x, y, x1, y1)
-    oval(x + step * x_koef_closely, y, x1 + step * x_koef_closely, y1)
-
-    oval(x - step / 2, y + step / y_koef_closely, x1 - step / 2, y1 + step / y_koef_closely)
-    oval(x - step / 2 + step * x_koef_closely, y + step / y_koef_closely, x1 - step / 2 + step * x_koef_closely, y1 + step / y_koef_closely)
-    oval(x - step / 2 + step * x_koef_closely * 2, y + step / y_koef_closely, x1 - step / 2 + step * x_koef_closely * 2, y1 + step / y_koef_closely)
-
-    oval(x + step * x_koef_closely * 2, y, x1 + step * x_koef_closely * 2, y1)
-    oval(x - step / 2 + step * x_koef_closely * 3, y + step / y_koef_closely, x1 - step / 2 + step * x_koef_closely * 3, y1 + step / y_koef_closely)
+    for i in point_of_clouds_arr:
+        oval(i[0], i[1], i[2], i[3])
 
 def draw_umbrella(size = 1, x = 75, y = 175):
     height = 80
@@ -189,11 +245,11 @@ def draw_boats(size = 1, x = 235, y = 135):
              (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size)])
 
 def main():
-    y_top_bottom = calculate_top_bottom_sky_sea_sand()
+    y_top_bottom_arr = calculate_top_bottom_sky_sea_sand()
 
-    draw_sky(y_top_bottom_arr = y_top_bottom[0])
-    draw_sea(y_top_bottom_arr = y_top_bottom[1])
-    draw_sand(y_top_bottom_arr = y_top_bottom[2])
+    draw_sky(y_top_bottom_arr[0])
+    draw_sea(y_top_bottom_arr[1])
+    draw_sand(y_top_bottom_arr[2])
 
     draw_sun()
 
