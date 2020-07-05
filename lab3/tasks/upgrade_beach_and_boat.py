@@ -4,11 +4,14 @@ import math
 X_WINDOW_SIZE = 400
 Y_WINDOW_SIZE = 270
 
-# x_window_size = 600
-# y_window_size = 405
+x_window_size = X_WINDOW_SIZE
+y_window_size = Y_WINDOW_SIZE
 
-x_window_size = 400
-y_window_size = 270
+# x_window_size = X_WINDOW_SIZE * 1.5
+# y_window_size = Y_WINDOW_SIZE * 1.5
+
+# x_window_size = X_WINDOW_SIZE * 2.5
+# y_window_size = Y_WINDOW_SIZE * 2.5
 
 x_koef_screen = x_window_size / X_WINDOW_SIZE
 y_koef_screen = y_window_size / Y_WINDOW_SIZE
@@ -59,7 +62,7 @@ def draw_sand(y_top_bottom_arr, radius = 30):
 
     rectangle(x_top, y_top, x_bottom,  y_bottom)
 
-    count_of_sand_waves = x_window_size // radius
+    count_of_sand_waves = int(x_window_size // radius)
     x1 = 15
     y_top_circle = y_top - radius * 0.86
     y_bottom_circle = y_top + radius * 0.86
