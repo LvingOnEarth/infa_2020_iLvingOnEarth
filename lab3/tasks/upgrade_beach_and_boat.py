@@ -10,9 +10,6 @@ Y_WINDOW_SIZE = 270
 x_window_size = 400
 y_window_size = 270
 
-# x_koef_screen = 1 - X_WINDOW_SIZE / x_window_size
-# y_koef_screen = 1 - Y_WINDOW_SIZE / y_window_size
-
 x_koef_screen = x_window_size / X_WINDOW_SIZE
 y_koef_screen = y_window_size / Y_WINDOW_SIZE
 
@@ -182,31 +179,50 @@ def draw_clouds(size_x = 1, size_y = 1, x = 30, y = 25, step = 20):
         oval(i[0], i[1], i[2], i[3])
 
 def draw_umbrella(size = 1, x = 75, y = 175):
-    height = 80
-    size_of_pen = 5 / size
-    half_size_of_pen = size_of_pen / 2
+    x = x * x_koef_screen
+    y = y * y_koef_screen
+
+    height = 80 * y_koef_screen
+    size_of_pen = 5 / size * y_koef_screen
+    half_size_of_pen = size_of_pen // 2
 
     # bottom
     penSize(size_of_pen)
     penColor(228, 131, 18)
-    line(x, y, x, height / size + y)
+    line(x, y, x, height // size + y)
     penColor(244, 80, 80)
-    line(x, y, x, y - 25 / size)
+    line(x, y, x, y - 25 // size * y_koef_screen)
 
     # top
     penSize(1)
     penColor(195, 62, 62)
     brushColor(244, 80, 80)
-    polygon([(x - half_size_of_pen - 35 / size, y), (x - half_size_of_pen, y - 25 / size),
-             (x - half_size_of_pen, y), (x - half_size_of_pen - 35 / size, y)])
-    polygon([(x + half_size_of_pen + 35 / size, y), (x + half_size_of_pen, y - 25 / size),
-             (x + half_size_of_pen, y), (x + half_size_of_pen + 35 / size, y)])
+
+    x1_left = x - half_size_of_pen - 35 / size * x_koef_screen
+    x1_right = x + half_size_of_pen + 35 / size * x_koef_screen
+    y1 = y
+
+    x2_left = x - half_size_of_pen
+    x2_right = x + half_size_of_pen
+    y2 = y - 25 / size * y_koef_screen
+
+    x3_left = x - half_size_of_pen
+    x3_right = x + half_size_of_pen
+    y3 = y
+
+    # left triangle
+    polygon([(x1_left, y1), (x2_left, y2),
+             (x3_left, y3), (x1_left, y1)])
+
+    # right triangle
+    polygon([(x1_right, y1), (x2_right, y2),
+             (x3_right, y3), (x1_right, y1)])
 
     # black lines on umbrella
     penColor(197, 63, 63)
-    for i in range(1, 4):
-        line(x - half_size_of_pen - 35 / size + 7.5 / size * i, y, x - half_size_of_pen, y - 25 / size)
-        line(x + half_size_of_pen + 35 / size - 7.5 / size * i, y, x + half_size_of_pen, y - 25 / size)
+    for i in range(1, 5):
+        line(x1_left + 7.5 / size * x_koef_screen * i, y1, x2_left, y2)
+        line(x1_right - 7.5 / size * x_koef_screen * i, y1, x2_right, y2)
 
 
 def draw_boats(size = 1, x = 235, y = 135):
