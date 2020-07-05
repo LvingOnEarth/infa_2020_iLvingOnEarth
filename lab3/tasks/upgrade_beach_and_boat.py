@@ -179,8 +179,8 @@ def draw_clouds(size_x = 1, size_y = 1, x = 30, y = 25, step = 20):
         oval(i[0], i[1], i[2], i[3])
 
 def draw_umbrella(size = 1, x = 75, y = 175):
-    x = x * x_koef_screen
-    y = y * y_koef_screen
+    x *= x_koef_screen
+    y *= y_koef_screen
 
     height = 80 * y_koef_screen
     size_of_pen = 5 / size * y_koef_screen
@@ -229,36 +229,51 @@ def draw_boats(size = 1, x = 235, y = 135):
     penColor(165, 70, 41)
     brushColor(187, 79, 1)
 
-    x_length = 95 * size
-    y_length = 25 * size
+    x *= x_koef_screen
+    y *= y_koef_screen
+
+    x_length = 95 * size * x_koef_screen
+    y_length = 25 * size * y_koef_screen
 
     x1 = x + x_length
     y1 = y + y_length
 
     rectangle(x, y, x1, y1)
-    polygon([(x1, y1), (x1 + 45 * size, y),
+    polygon([(x1, y1), (x1 + 45 * size * x_koef_screen, y),
              (x1, y), (x1, y1)])
     arc(x - y_length, y - y_length, x + y_length, y1, 180, 270)
 
-    penSize(3 * size)
-    brushColor(255, 255, 255)
+    penSize(3 * size * x_koef_screen)
     penColor(0, 0, 0)
-    circle(x1 + 10 * size, y1 - 16.5 * size, 6 * size)
+    brushColor(255, 255, 255)
 
-    penSize(5 * size)
-    line(x + (x1 - x) / 2 - 15 * size, y, x + (x1 - x) / 2 - 15 * size, y - 60 * size)
+    circle(x1 + 10 * size * x_koef_screen, y1 - 16.5 * size * y_koef_screen, 6 * size * x_koef_screen)
+
+    penSize(5 * size * x_koef_screen)
+    line(x + (x1 - x) / 2 - 15 * size * x_koef_screen, y, x + (x1 - x) / 2 - 15 * size * x_koef_screen, y - 60 * size * y_koef_screen)
 
     penSize(1)
     penColor(170, 173, 132)
     brushColor(223, 214, 154)
-    polygon([(x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y),
-             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 12.5 * size, y - (y - (y - 60 * size)) / 2),
-             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 37.5 * size, y - (y - (y - 60 * size)) / 2),
-             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y)])
-    polygon([(x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size),
-             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 12.5 * size, y - (y - (y - 60 * size)) / 2),
-             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2 + 37.5 * size, y - (y - (y - 60 * size)) / 2),
-             (x + (x1 - x) / 2 - 15 * size + (5 * size) / 2, y - 60 * size)])
+
+    # ship sails
+    x1_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2
+    y1_bottom = y
+    y1_top = y - 60 * size * y_koef_screen
+
+    x2_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2 + 12.5 * size * x_koef_screen
+    y2_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
+
+    x3_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2 + 37.5 * size * x_koef_screen
+    y3_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
+
+    # bottom sail
+    polygon([(x1_for_both, y1_bottom), (x2_for_both, y2_for_both),
+             (x3_for_both, y3_for_both), (x1_for_both, y1_bottom)])
+
+    # top sail
+    polygon([(x1_for_both, y1_top), (x2_for_both, y2_for_both),
+             (x3_for_both, y3_for_both), (x1_for_both, y1_top)])
 
 def main():
     y_top_bottom_arr = calculate_top_bottom_sky_sea_sand()
@@ -278,7 +293,6 @@ def main():
 
     draw_boats(size = 1, x = 235, y = 135)
     draw_boats(size = 0.5, x = 130, y = 150)
-
 
 main()
 run()
