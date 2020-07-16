@@ -324,8 +324,8 @@ def draw_boats(size = 1, x = 235, y = 135, direction = 'right'):
         y1 = y + y_length
 
         mid_of_boat = rectangle(x, y, x1, y1)
-        right_of_boat = arc(x - y_length, y - y_length, x + y_length, y1, 0, -90)
-        left_of_boat = polygon([(x1, y1), (x1 - 45 * size * x_koef_screen, y),
+        left_of_boat = arc(x - y_length, y - y_length, x + y_length, y1, 0, -90)
+        right_of_boat = polygon([(x1, y1), (x1 - 45 * size * x_koef_screen, y),
                                  (x1, y), (x1, y1)])
 
         penSize(3 * size * x_koef_screen)
@@ -391,6 +391,47 @@ def main():
                 moveObjectBy(sand[y], -60, 0)
 
         # boats moving
+        for j in range(len(arr_boats)):
+            forward_of_boat = bbox(arr_boats[j][1])[0] - bbox(arr_boats[j][2])[0]
+
+            if bbox(arr_boats[j][1])[2] >= x_window_size and forward_of_boat > 0:
+                x1_mid_of_boat = bbox(arr_boats[j][0])[2]
+
+                for h in range(len(arr_boats[j])):
+                    deleteObject(arr_boats[j][h])
+                del arr_boats[j]
+
+                if j == 0:
+                    boat = draw_boats(size=1, x=x1_mid_of_boat, y=135, direction='left')
+                elif j == 1:
+                    boat = draw_boats(size=0.5, x=x1_mid_of_boat, y=120, direction='left')
+
+                arr_boats.insert(j, boat)
+
+            elif bbox(arr_boats[j][1])[2] <= 0 and forward_of_boat < 0:
+                x1_mid_of_boat = bbox(arr_boats[j][0])[0]
+
+                for h in range(len(arr_boats[j])):
+                    deleteObject(arr_boats[j][h])
+                del arr_boats[j]
+
+                if j == 0:
+                    boat = draw_boats(size=1, x=x1_mid_of_boat, y=135, direction='right')
+                elif j == 1:
+                    boat = draw_boats(size=0.5, x=x1_mid_of_boat, y=120, direction='right')
+
+                arr_boats.insert(j, boat)
+
+
+            if forward_of_boat > 0:
+                for k in range(len(arr_boats[j])):
+                    moveObjectBy((arr_boats[j][k]), 15, 0)
+            else:
+                for k in range(len(arr_boats[j])):
+                    moveObjectBy((arr_boats[j][k]), -15, 0)
+
+
+
 
 
 
