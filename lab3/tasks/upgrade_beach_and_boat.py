@@ -264,7 +264,7 @@ def draw_umbrella(size = 1, x = 75, y = 175):
 
     return arr_umbrella
 
-def draw_boats(size = 1, x = 235, y = 135):
+def draw_boats(size = 1, x = 235, y = 135, direction = 'right'):
     penColor(165, 70, 41)
     brushColor(187, 79, 1)
 
@@ -276,45 +276,91 @@ def draw_boats(size = 1, x = 235, y = 135):
     x_length = 95 * size * x_koef_screen
     y_length = 25 * size * y_koef_screen
 
-    x1 = x + x_length
-    y1 = y + y_length
+    if direction == 'right':
 
-    mid_of_boat = rectangle(x, y, x1, y1)
-    right_of_boat = polygon([(x1, y1), (x1 + 45 * size * x_koef_screen, y),
-             (x1, y), (x1, y1)])
-    left_of_boat = arc(x - y_length, y - y_length, x + y_length, y1, 180, 270)
+        x1 = x + x_length
+        y1 = y + y_length
 
-    penSize(3 * size * x_koef_screen)
-    penColor(0, 0, 0)
-    brushColor(255, 255, 255)
+        mid_of_boat = rectangle(x, y, x1, y1)
+        right_of_boat = polygon([(x1, y1), (x1 + 45 * size * x_koef_screen, y),
+                 (x1, y), (x1, y1)])
+        left_of_boat = arc(x - y_length, y - y_length, x + y_length, y1, 180, 270)
 
-    circ_of_boat = circle(x1 + 10 * size * x_koef_screen, y1 - 16.5 * size * y_koef_screen, 6 * size * x_koef_screen)
+        penSize(3 * size * x_koef_screen)
+        penColor(0, 0, 0)
+        brushColor(255, 255, 255)
 
-    penSize(5 * size * x_koef_screen)
-    mast_of_boat = line(x + (x1 - x) / 2 - 15 * size * x_koef_screen, y, x + (x1 - x) / 2 - 15 * size * x_koef_screen, y - 60 * size * y_koef_screen)
+        circ_of_boat = circle(x1 + 10 * size * x_koef_screen, y1 - 16.5 * size * y_koef_screen, 6 * size * x_koef_screen)
 
-    penSize(1)
-    penColor(170, 173, 132)
-    brushColor(223, 214, 154)
+        penSize(5 * size * x_koef_screen)
+        mast_of_boat = line(x + (x1 - x) / 2 - 15 * size * x_koef_screen, y, x + (x1 - x) / 2 - 15 * size * x_koef_screen, y - 60 * size * y_koef_screen)
 
-    # ship sails
-    x1_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2
-    y1_bottom = y
-    y1_top = y - 60 * size * y_koef_screen
+        penSize(1)
+        penColor(170, 173, 132)
+        brushColor(223, 214, 154)
 
-    x2_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2 + 12.5 * size * x_koef_screen
-    y2_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
+        # ship sails
+        x1_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2
+        y1_bottom = y
+        y1_top = y - 60 * size * y_koef_screen
 
-    x3_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2 + 37.5 * size * x_koef_screen
-    y3_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
+        x2_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2 + 12.5 * size * x_koef_screen
+        y2_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
 
-    # bottom sail
-    bottom_sail = polygon([(x1_for_both, y1_bottom), (x2_for_both, y2_for_both),
-             (x3_for_both, y3_for_both), (x1_for_both, y1_bottom)])
+        x3_for_both = x + (x1 - x) / 2 - 15 * size * x_koef_screen + (5 * size * x_koef_screen) / 2 + 37.5 * size * x_koef_screen
+        y3_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
 
-    # top sail
-    top_sail = polygon([(x1_for_both, y1_top), (x2_for_both, y2_for_both),
-             (x3_for_both, y3_for_both), (x1_for_both, y1_top)])
+        # bottom sail
+        bottom_sail = polygon([(x1_for_both, y1_bottom), (x2_for_both, y2_for_both),
+                 (x3_for_both, y3_for_both), (x1_for_both, y1_bottom)])
+
+        # top sail
+        top_sail = polygon([(x1_for_both, y1_top), (x2_for_both, y2_for_both),
+                 (x3_for_both, y3_for_both), (x1_for_both, y1_top)])
+
+    else:
+
+        x1 = x - x_length
+        y1 = y + y_length
+
+        mid_of_boat = rectangle(x, y, x1, y1)
+        right_of_boat = arc(x - y_length, y - y_length, x + y_length, y1, 0, -90)
+        left_of_boat = polygon([(x1, y1), (x1 - 45 * size * x_koef_screen, y),
+                                 (x1, y), (x1, y1)])
+
+        penSize(3 * size * x_koef_screen)
+        penColor(0, 0, 0)
+        brushColor(255, 255, 255)
+
+        circ_of_boat = circle(x1 - 10 * size * x_koef_screen, y1 - 16.5 * size * y_koef_screen,
+                              6 * size * x_koef_screen)
+
+        penSize(5 * size * x_koef_screen)
+        mast_of_boat = line(x - (x - x1) / 2 + 15 * size * x_koef_screen, y,
+                            x - (x - x1) / 2 + 15 * size * x_koef_screen, y - 60 * size * y_koef_screen)
+
+        penSize(1)
+        penColor(170, 173, 132)
+        brushColor(223, 214, 154)
+
+        # ship sails
+        x1_for_both = x - (x - x1) / 2 + 15 * size * x_koef_screen - (5 * size * x_koef_screen) / 2
+        y1_bottom = y
+        y1_top = y - 60 * size * y_koef_screen
+
+        x2_for_both = x - (x - x1) / 2 + 15 * size * x_koef_screen - (5 * size * x_koef_screen) / 2 - 12.5 * size * x_koef_screen
+        y2_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
+
+        x3_for_both = x - (x - x1) / 2 + 15 * size * x_koef_screen - (5 * size * x_koef_screen) / 2 - 37.5 * size * x_koef_screen
+        y3_for_both = y - (y - (y - 60 * size * y_koef_screen)) / 2
+
+        # bottom sail
+        bottom_sail = polygon([(x1_for_both, y1_bottom), (x2_for_both, y2_for_both),
+                               (x3_for_both, y3_for_both), (x1_for_both, y1_bottom)])
+
+        # top sail
+        top_sail = polygon([(x1_for_both, y1_top), (x2_for_both, y2_for_both),
+                            (x3_for_both, y3_for_both), (x1_for_both, y1_top)])
 
     arr_boat.append(mid_of_boat)
     arr_boat.append(right_of_boat)
@@ -326,29 +372,28 @@ def draw_boats(size = 1, x = 235, y = 135):
 
     return arr_boat
 
-# def del_obj(arr_obj):
-#     arr = arr_obj
-#
-#     def test(arr = arr_obj):
-#         for i in range(len(arr)):
-#
-#             if isinstance(arr[i], list):
-#                 test(arr[i])
-#
-#             deleteObject(arr[i])
-#
-#     return test
-
-
+def update_sand():
+    pass
 
 def main():
+
+    arr_clouds = []
+    arr_boats = []
+
     def update():
+
+        # wave moving
         for i in range(len(sand)):
             moveObjectBy(sand[i], 30, 0)
 
         if bbox(sand[0])[0] > -1:
             for y in range(len(sand)):
                 moveObjectBy(sand[y], -60, 0)
+
+        # boats moving
+
+
+
 
     y_top_bottom_arr = calculate_top_bottom_sky_sea_sand()
 
@@ -365,13 +410,16 @@ def main():
     umbrella_1 = draw_umbrella(size = 1, x = 75, y = 175)
     umbrella_2 = draw_umbrella(size = 1.5, x = 175, y = 200)
 
-    boats_1 = draw_boats(size = 1, x = 235, y = 135)
-    boats_2 = draw_boats(size = 0.5, x = 130, y = 150)
+    boats_1 = draw_boats(size = 1, x = 235, y = 135, direction = 'right')
+    boats_2 = draw_boats(size = 0.5, x = 130, y = 120, direction = 'left')
 
-    onTimer(update, 250)
+    arr_clouds.append(clouds_1)
+    arr_clouds.append(clouds_2)
+    arr_clouds.append(clouds_3)
+    arr_boats.append(boats_1)
+    arr_boats.append(boats_2)
 
-    # delet = del_obj([sky, sea, sand, sun, clouds_1, clouds_2, clouds_3, umbrella_1, umbrella_2, boats_1, boats_2])
-
+    onTimer(update, 175)
 
 
 main()
