@@ -379,6 +379,7 @@ def main():
 
     arr_clouds = []
     arr_boats = []
+    arr_umbrellas = []
 
     def update():
 
@@ -392,36 +393,32 @@ def main():
 
         # boats moving
         for j in range(len(arr_boats)):
-            forward_of_boat = bbox(arr_boats[j][1])[0] - bbox(arr_boats[j][2])[0]
+            x_end_of_boat = bbox(arr_boats[j][2])[0]
+            forward_of_boat = bbox(arr_boats[j][1])[0] - x_end_of_boat
 
-            if bbox(arr_boats[j][1])[2] >= x_window_size and forward_of_boat > 0:
-                x1_mid_of_boat = bbox(arr_boats[j][0])[2]
-
+            if x_end_of_boat >= x_window_size and forward_of_boat > 0:
                 for h in range(len(arr_boats[j])):
                     deleteObject(arr_boats[j][h])
                 del arr_boats[j]
 
                 if j == 0:
-                    boat = draw_boats(size=1, x=x1_mid_of_boat, y=135, direction='left')
+                    boat = draw_boats(size = 1, x = -250, y = 135, direction = 'right')
                 elif j == 1:
-                    boat = draw_boats(size=0.5, x=x1_mid_of_boat, y=120, direction='left')
+                    boat = draw_boats(size = 0.5, x = x_window_size, y = 120, direction = 'left')
 
                 arr_boats.insert(j, boat)
 
-            elif bbox(arr_boats[j][1])[2] <= 0 and forward_of_boat < 0:
-                x1_mid_of_boat = bbox(arr_boats[j][0])[0]
-
+            elif x_end_of_boat <= 0 and forward_of_boat < 0:
                 for h in range(len(arr_boats[j])):
                     deleteObject(arr_boats[j][h])
                 del arr_boats[j]
 
                 if j == 0:
-                    boat = draw_boats(size=1, x=x1_mid_of_boat, y=135, direction='right')
+                    boat = draw_boats(size = 1, x = -250, y = 135, direction = 'right')
                 elif j == 1:
-                    boat = draw_boats(size=0.5, x=x1_mid_of_boat, y=120, direction='right')
+                    boat = draw_boats(size = 0.5, x = x_window_size, y = 120, direction = 'left')
 
                 arr_boats.insert(j, boat)
-
 
             if forward_of_boat > 0:
                 for k in range(len(arr_boats[j])):
@@ -430,11 +427,11 @@ def main():
                 for k in range(len(arr_boats[j])):
                     moveObjectBy((arr_boats[j][k]), -15, 0)
 
-
-
-
-
-
+        # umbrellas
+        for k in range(len(arr_umbrellas)):
+            for l in range(len(arr_umbrellas[k])):
+                moveObjectBy(arr_umbrellas[k][l], 15, 0)
+                moveObjectBy(arr_umbrellas[k][l], -15, 0)
 
     y_top_bottom_arr = calculate_top_bottom_sky_sea_sand()
 
@@ -448,17 +445,19 @@ def main():
     clouds_2 = draw_clouds(1, 1.1, 150, 10, 40)
     clouds_3 = draw_clouds(1.4, 0.9, 50, 65, 30)
 
-    umbrella_1 = draw_umbrella(size = 1, x = 75, y = 175)
-    umbrella_2 = draw_umbrella(size = 1.5, x = 175, y = 200)
-
     boats_1 = draw_boats(size = 1, x = 235, y = 135, direction = 'right')
     boats_2 = draw_boats(size = 0.5, x = 130, y = 120, direction = 'left')
+
+    umbrella_1 = draw_umbrella(size=1, x=75, y=175)
+    umbrella_2 = draw_umbrella(size=1.5, x=175, y=200)
 
     arr_clouds.append(clouds_1)
     arr_clouds.append(clouds_2)
     arr_clouds.append(clouds_3)
     arr_boats.append(boats_1)
     arr_boats.append(boats_2)
+    arr_umbrellas.append(umbrella_1)
+    arr_umbrellas.append(umbrella_2)
 
     onTimer(update, 175)
 
