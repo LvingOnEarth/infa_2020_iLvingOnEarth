@@ -430,8 +430,18 @@ def main():
         # umbrellas
         for k in range(len(arr_umbrellas)):
             for l in range(len(arr_umbrellas[k])):
-                moveObjectBy(arr_umbrellas[k][l], 15, 0)
-                moveObjectBy(arr_umbrellas[k][l], -15, 0)
+                deleteObject(arr_umbrellas[k][l])
+            del arr_umbrellas[k]
+
+            if k == 0:
+                umbrella = draw_umbrella(size=1, x=75, y=175)
+            else:
+                umbrella = draw_umbrella(size=1.5, x=175, y=200)
+
+            arr_umbrellas.insert(k, umbrella)
+
+        # sun's rotation
+
 
     y_top_bottom_arr = calculate_top_bottom_sky_sea_sand()
 
