@@ -89,13 +89,13 @@ def draw_sand(y_top_bottom_arr, radius = 30, x1 = 15):
 
     return arr_circles
 
-def draw_sun(triangle_length = y_window_size * 0.11):
+def draw_sun(triangle_length = y_window_size * 0.11, alpha = 10):
     penColor(254, 247, 25)
     brushColor(255, 247, 23)
 
     arr_sun = []
 
-    angle_of_triangle_turn = 10
+    angle_of_triangle_turn = alpha
 
     half_bottom_triangle_length = triangle_length / 5
 
@@ -112,8 +112,9 @@ def draw_sun(triangle_length = y_window_size * 0.11):
     y_triangle_point_3 = y_center_of_sun + half_bottom_triangle_length
 
 
+    # if alpha == 10:
     sunray = polygon([(x_triangle_point_1, y_triangle_point_1), (x_triangle_point_2, y_triangle_point_2),
-             (x_triangle_point_3, y_triangle_point_3), (x_triangle_point_1, y_triangle_point_1)])
+                (x_triangle_point_3, y_triangle_point_3), (x_triangle_point_1, y_triangle_point_1)])
 
     arr_sun.append(sunray)
 
@@ -382,6 +383,7 @@ def main():
     arr_umbrellas = []
 
     def update():
+        global sun
 
         # wave moving
         for i in range(len(sand)):
@@ -390,6 +392,19 @@ def main():
         if bbox(sand[0])[0] > -1:
             for y in range(len(sand)):
                 moveObjectBy(sand[y], -60, 0)
+
+            # sun's rotation
+            for l in range(len(sun)):
+                deleteObject(sun[l])
+            del sun[l]
+
+            sun = draw_sun(alpha=10)
+        else:
+            for l in range(len(sun)):
+                deleteObject(sun[l])
+            del sun[l]
+
+            sun = draw_sun(alpha=15)
 
         # boats moving
         for j in range(len(arr_boats)):
@@ -440,7 +455,9 @@ def main():
 
             arr_umbrellas.insert(k, umbrella)
 
-        # sun's rotation
+
+
+
 
 
     y_top_bottom_arr = calculate_top_bottom_sky_sea_sand()
@@ -449,7 +466,8 @@ def main():
     sea = draw_sea(y_top_bottom_arr[1])
     sand = draw_sand(y_top_bottom_arr[2], 30, 15)
 
-    sun = draw_sun()
+    global sun
+    sun = draw_sun(alpha = 10)
 
     clouds_1 = draw_clouds(1, 1, 30, 25, 20)
     clouds_2 = draw_clouds(1, 1.1, 150, 10, 40)
