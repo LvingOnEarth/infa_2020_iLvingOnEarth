@@ -455,9 +455,33 @@ def main():
 
             arr_umbrellas.insert(k, umbrella)
 
+        # clouds' moving
+        for h in range(len(arr_clouds)):
+            for i in range(len(arr_clouds[h])):
+                if h == 0:
+                    moveObjectBy(arr_clouds[h][i], 15, 0)
+                elif h == 1:
+                    moveObjectBy(arr_clouds[h][i], 25, 0)
+                elif h == 2:
+                    moveObjectBy(arr_clouds[h][i], 20, 0)
+
+            if bbox(arr_clouds[h][0])[0] >= x_window_size:
+                len_of_cloud = -1 * (bbox(arr_clouds[h][6])[2] - bbox(arr_clouds[h][0])[0])
 
 
+                for l in range(len(arr_clouds[h])):
+                    deleteObject(arr_clouds[h][l])
+                del arr_clouds[h]
 
+                if h == 0:
+                    cloud = draw_clouds(1, 1, len_of_cloud, 25, 20)
+                    arr_clouds.insert(h, cloud)
+                elif h == 1:
+                    cloud = draw_clouds(1, 1.1, len_of_cloud, 10, 40)
+                    arr_clouds.insert(h, cloud)
+                elif h == 2:
+                    cloud = draw_clouds(1.4, 0.9, len_of_cloud, 65, 30)
+                    arr_clouds.insert(h, cloud)
 
 
     y_top_bottom_arr = calculate_top_bottom_sky_sea_sand()
